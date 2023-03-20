@@ -5,15 +5,19 @@ import Header from "./components/header";
 import { Box } from "@mui/system";
 import Home from "./components/home";
 import DataProvider from "./context/DataProvider";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 function App() {
   return (
-    <DataProvider>
-      <Header />
-      <Box style={{ marginTop: "56px" }}>
-        <Home />
-      </Box>
-    </DataProvider>
+    <Provider store={store}>
+      <DataProvider>
+        <Header />
+        <Box style={{ marginTop: "56px" }}>
+          <Home />
+        </Box>
+      </DataProvider>
+    </Provider>
   );
 }
 

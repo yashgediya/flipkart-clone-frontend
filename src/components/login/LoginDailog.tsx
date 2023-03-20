@@ -1,7 +1,8 @@
 import { Box, Button, Dialog, TextField, Typography } from "@mui/material";
 import { style, styled } from "@mui/system";
-import React, { useState } from "react";
-import { authenticateSignup } from "../../service/api";
+import React, { useContext, useState } from "react";
+import { authenticateLogin, authenticateSignup } from "../../service/api";
+import { DataContext } from "../../context/DataProvider";
 
 const Component = styled(Box)`
   max-height: 70vh;
@@ -76,6 +77,11 @@ const LoginDailog = ({ open, setOpen }: any) => {
     password: "",
     phone: "",
   });
+
+  const [login, setLogin] = useState({ userName: "", password: "" });
+
+  const { setAccount }: any = useContext(DataContext);
+
   const handleClose = () => {
     setOpen(false);
     setIsSignUp(false);
@@ -85,13 +91,27 @@ const LoginDailog = ({ open, setOpen }: any) => {
     setSignupData({ ...signupData, [e.target.name]: e.target.value });
   };
 
-  console.log(signupData);
+  const onInputChangee = (e: any) => {
+    setLogin({ ...login, [e.target.name]: e.target.value });
+  };
+
 
   const signupUser = async () => {
     await authenticateSignup(signupData)
       .then((res) => {
-        console.log(res);
         handleClose();
+        setAccount(res?.data?.data?.firstName);
+      })
+      .catch((err) => {
+        return err;
+      });
+  };
+
+  const loginUser = async () => {
+    await authenticateLogin(login)
+      .then((res) => {
+        handleClose();
+        setAccount(res?.data?.data?.firstName);
       })
       .catch((err) => {
         return err;
@@ -120,13 +140,23 @@ const LoginDailog = ({ open, setOpen }: any) => {
 
           {!isSignUp ? (
             <Wrapper>
-              <TextField variant="standard" label="Enter Email/Mobile number" />
-              <TextField variant="standard" label="Enter Password" />
+              <TextField
+                variant="standard"
+                label="Enter Email/Mobile number"
+                name="userName"
+                onChange={(e) => onInputChangee(e)}
+              />
+              <TextField
+                variant="standard"
+                label="Enter Password"
+                name="password"
+                onChange={(e) => onInputChangee(e)}
+              />
               <Text>
                 By continuing, you agree to Flipkart's Terms of Use and Privacy
                 Policy.
               </Text>
-              <LoginButton>Login</LoginButton>
+              <LoginButton onClick={loginUser}>Login</LoginButton>
               <Typography style={{ textAlign: "center", marginTop: 20 }}>
                 OR
               </Typography>
