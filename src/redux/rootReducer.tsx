@@ -1,6 +1,14 @@
 import { combineReducers } from "redux";
-import { getProductReducer } from "./reducers/ProductReducer";
+import {
+  getProductDetailsReducer,
+  getProductReducer,
+} from "./reducers/ProductReducer";
+import { cartReducer } from "./reducers/CartReducer";
 
-const rootReducer = combineReducers({ getProduct: getProductReducer });
+const rootReducer = combineReducers({
+  getProduct: getProductReducer,
+  getProductDetails: getProductDetailsReducer,
+  cart: cartReducer,
+});
 
 export default rootReducer;

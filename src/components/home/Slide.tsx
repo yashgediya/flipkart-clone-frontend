@@ -1,9 +1,11 @@
 import styled from "@emotion/styled";
-import { Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import Countdown from "react-countdown";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { Link } from "react-router-dom";
 
 const Component = styled(Box)`
   margin-top: 10px;
@@ -12,9 +14,42 @@ const Component = styled(Box)`
 
 const Deal = styled(Box)`
   padding: 15px 20px;
+  display: flex;
 `;
 
-const Slide = ({ products }: any) => {
+const Timer = styled(Box)`
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  color: #7f7f7f;
+  gap: 10px;
+`;
+
+const DealText = styled(Typography)`
+  font-size: 22px;
+  font-weight: 600;
+  margin-right: 25px;
+`;
+
+const ViewAllButton = styled(Button)`
+  margin-left: auto;
+  background-color: #2874f0;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 600;
+`;
+
+const Image = styled("img")({
+  width: "auto",
+  height: 150,
+});
+
+const Text = styled(Typography)`
+  font-size: 14px;
+  margin-top: 5px;
+`;
+
+const Slide = ({ products, title, timer }: any) => {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -29,11 +64,33 @@ const Slide = ({ products }: any) => {
       items: 1,
     },
   };
+
+  const timerURL =
+    "https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/timer_a73398.svg";
+
+  const renderer: any = ({ hours, minutes, seconds }: any) => {
+    return (
+      <Box>
+        {hours}:{minutes}:{seconds} Left
+      </Box>
+    );
+  };
+
   return (
     <Component>
       <Deal>
-        <Typography>Deal of the Day</Typography>
+        <DealText>{title}</DealText>
+        {timer && (
+          <Timer>
+            <img src={timerURL} alt="timer" style={{ width: 24 }} />
+            <Countdown date={Date.now() + 5.04e7} renderer={renderer} />
+          </Timer>
+        )}
+        <ViewAllButton variant="contained" color="primary">
+          View All
+        </ViewAllButton>
       </Deal>
+      <Divider />
       <Carousel
         responsive={responsive}
         //   dotListClass="custom-dot-list-style"
@@ -47,7 +104,21 @@ const Slide = ({ products }: any) => {
       >
         {products &&
           products.map((product: any) => {
-            return <img src={product?.url} alt="product" />;
+            return (
+              <Link
+                to={`product/${product?.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Box textAlign="center" style={{ padding: "25px 15px" }}>
+                  <Image src={product?.url} alt="product" />
+                  <Text style={{ fontWeight: 600, color: "#212121" }}>
+                    {product?.title?.shortTitle}
+                  </Text>
+                  <Text style={{ color: "green" }}>{product?.discount}</Text>
+                  <Text style={{ color: "#7f7f7f" }}>{product?.tagline}</Text>
+                </Box>
+              </Link>
+            );
           })}
       </Carousel>
     </Component>
