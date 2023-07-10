@@ -63,7 +63,7 @@ const ProductDetails = ({ products }: any) => {
         </Box>
         &nbsp;&nbsp;&nbsp;
         <Box component="span" style={{ color: "#388E3C" }}>
-          {products?.price?.discount}
+          {products?.price?.discount} off
         </Box>
       </Typography>
       <Typography>Available Offers</Typography>

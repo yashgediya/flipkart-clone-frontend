@@ -1,7 +1,7 @@
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../constants/CartConstant";
 
 export const cartReducer = (state: any = { cartItems: [] }, action: any) => {
-  switch (action) {
+  switch (action?.type) {
     case ADD_TO_CART: {
       const item = action?.payload;
       const exist = state?.castItems?.find(

@@ -24,15 +24,17 @@ const Text = styled(Typography)`
 
 const NavBar = () => {
   return (
-    <Component>
-      {navData &&
-        navData.map((navItem) => (
-          <Container>
-            <img src={navItem?.url} alt="nav-item" width={64} />
-            <Text>{navItem?.text}</Text>
-          </Container>
-        ))}
-    </Component>
+    <Box style={{ background: "#fff" }}>
+      <Component>
+        {navData &&
+          navData.map((navItem) => (
+            <Container>
+              <img src={navItem?.url} alt="nav-item" width={64} />
+              <Text>{navItem?.text}</Text>
+            </Container>
+          ))}
+      </Component>
+    </Box>
   );
 };
 
